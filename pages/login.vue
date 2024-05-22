@@ -1,18 +1,8 @@
 <template>
-  <div>
-    <div>
-      <button @click="signIn('github')">JS Sign In Github</button>
-    </div>
-    <div v-if="status === 'loading' || status === 'authenticated'">Loading...</div>
-    <div v-if="status === 'error'">Error</div>
-  </div>
+  <button @click="githubLogin()">Login with GitHub</button>
+  <div v-if="statusUser === 'LOADING'">Cargando...</div>
 </template>
 
 <script setup lang="ts">
-const { signIn, signOut, session, status, cookies, getProviders } = useAuth();
-
-const router = useRouter();
-if (status.value === 'authenticated') {
-  router.push('/');
-}
+const { githubLogin, statusUser } = useGithub();
 </script>

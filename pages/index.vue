@@ -1,9 +1,18 @@
 <template>
   <FormLink />
-  <button @click="signOut()">Sign Out</button>
+  <button @click="logout()">Sign Out</button>
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth', auth: { guestRedirectTo: '/login' } });
-const { signOut } = useAuth();
+const router = useRouter()
+const { githubLogout } = useGithub();
+
+const logout = async () => {
+  await githubLogout()
+  router.push('/login')
+}
+
+definePageMeta({
+  middleware: ['auth'],
+});
 </script>

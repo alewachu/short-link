@@ -1,0 +1,22 @@
+const runtimeConfig = useRuntimeConfig();
+
+export default defineEventHandler(async (event) => {
+  const { code } = getQuery(event);
+  if (!code) {
+    return sendRedirect(event, '/');
+  }
+  const response: any = await $fetch('https://github.com/login/oauth/access_token', {
+    method: 'POST',
+    body: {
+      client_id: runtimeConfig.github.clientId,
+      client_secret: runtimeConfig.github.clientSecret,
+      code,
+    },
+  });
+  if (response.error) {
+    return sendRedirect(event, '/');
+  }
+  setCookie(event, 'gh_token', response.access_token, { path: '/' });
+
+  return sendRedirect(event, '/');
+});
