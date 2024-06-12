@@ -1,10 +1,41 @@
-version: '3.5'
+name: 'short-link'
 
 services:
-  nuxt:
-    build:
-      context: .
-    image: nuxt-app
-    container_name: nuxt-app
+  shortlink:
+    build: .
+    container_name: shortlink
+    restart: always
+    image: short-link
     ports:
       - ${NUXT_PORT}:3000
+    command: "npm run start"
+    networks:
+      - shortlink-networks
+  shortlink-mysql:
+    image: mysql:8.4.0
+    container_name: shortlink-mysql
+    command: [ "mysqld", "--mysql-native-password=ON" ]
+    volumes:
+      - /var/lib/mysql-shortlink:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - ${MYSQL_PORT}:3306
+    restart: always
+    networks:
+      - shortlink-networks
+
+networks:
+  shortlink-networks:
+    name: shortlink-networks
+    driver: bridge
+    ipam:
+      config:
+        - subnet: ${NETWORK_SUBNET}
+          gateway: ${NETWORK_GATEWAY}
+
+volumes:
+  mysql-data:
