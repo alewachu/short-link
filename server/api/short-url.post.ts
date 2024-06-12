@@ -1,28 +1,21 @@
-import { PrismaClient } from '@prisma/client';
+import { db } from "../connect";
 
 export default defineEventHandler(async (event) => {
-  const prisma = new PrismaClient();
   const body = await readBody(event);
-  const { url } = body;
-  const shortUrl = Math.random().toString(36).substring(2, 6);
+  const userCookie = getCookie(event, 'user') as string
+  const user = JSON.parse(userCookie)
+
+  const { url, code } = body;
+  console.log(url, user, code)
   let data;
   try {
-    data = await prisma.link.create({
-      data: { url, shortUrl },
+    data = await db.link.create({
+      data: { url, userId: user.id, code },
     });
-
-    prisma.$disconnect();
     setResponseStatus(event, 200);
   } catch (error) {
+    console.log(error)
     setResponseStatus(event, 500);
   }
-
-  const a = new Promise((resolve) => {
-    setTimeout(() => {
-      resolve('');
-    }, 3000);
-  });
-
-  await Promise.resolve(a);
   return data;
 });

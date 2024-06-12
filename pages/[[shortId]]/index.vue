@@ -3,8 +3,10 @@
 </template>
 
 <script setup async lang="ts">
-import { type Data } from '~/types/commons';
-
+// import { type Data } from '~/types/commons';
+type Data = {
+    url: string;
+}
 const route = useRoute();
 const url = `/api/${route.params.shortId}`;
 const { data } = await useFetch<Data>(url);
