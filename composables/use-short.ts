@@ -1,3 +1,5 @@
+import type { CreateLink, ResponseData } from "~/types/commons";
+
 export default function () {
 
   const randomCode = () => {
@@ -5,8 +7,17 @@ export default function () {
   }
 
   const checkCode = async (code: string) => {
-    const { data } = await useFetch(`/api/code?q=${code}`)
+    const { data } = await useFetch<ResponseData>(`/api/code?q=${code}`)
     return data
   }
-  return { randomCode, checkCode }
+
+  const createLink = async (body: CreateLink) => {
+    const { data } = await useFetch<ResponseData>('/api/short-url', {
+      method: 'POST',
+      body,
+    });
+    return data
+  }
+
+  return { randomCode, checkCode, createLink }
 }

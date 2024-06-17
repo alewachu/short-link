@@ -1,23 +1,33 @@
-import { db } from "../connect";
+import { ResponseData } from "~/types/commons";
+import { availableUrl } from "../utils/available-url";
+import { MESSAGE_SUCCESS, MESSAGE_URL_REQUIRED } from "../utils/consts";
 
 export default defineEventHandler(async (event) => {
-  const { q } = getQuery(event)
+  const query = getQuery(event)
+  const url = query.q as string | undefined
+
   let isAvailableUrl = false
-  if (q && Boolean(q)) {
-    const found = await db.link.findFirst({
-      where: {
-        url: {
-          equals: q.toString().trim()
-        }
+  let data: ResponseData
+
+  if (url && Boolean(url)) {
+    isAvailableUrl = await availableUrl(url)
+    setResponseStatus(event, 200, MESSAGE_SUCCESS);
+    data = {
+      success: true,
+      message: MESSAGE_SUCCESS,
+      data: {
+        isAvailableUrl
       }
-    })
-    isAvailableUrl = found?.id ? false : true
-    setResponseStatus(event, 200);
+    }
   } else {
-    throw createError({
-      statusCode: 400,
-      statusMessage: 'Url is required',
-    })
+    setResponseStatus(event, 400, MESSAGE_URL_REQUIRED)
+    data = {
+      success: false,
+      message: MESSAGE_URL_REQUIRED,
+      data: {
+        isAvailableUrl
+      }
+    }
   }
-  return { isAvailableUrl }
+  return data
 })

@@ -1,25 +1,37 @@
+import { ResponseData } from "~/types/commons";
 import { db } from "../connect";
+import { MESSAGE_PAGE_NOT_FOUND, MESSAGE_SUCCESS } from "../utils/consts";
 
 export default defineEventHandler(async (event) => {
   const code = getRouterParam(event, 'code');
 
-  const data = await db.link.findUnique({
+  const link = await db.link.findUnique({
     where: { code },
   });
 
-  if (data?.id) {
+  let data: ResponseData
+  if (link?.id) {
     await db.link.update({
-      where: { id: data.id },
+      where: { id: link.id },
       data: {
-        visits: data.visits + 1
+        visits: link.visits + 1
       }
     })
+    setResponseStatus(event, 200, MESSAGE_SUCCESS);
+    data = {
+      success: false,
+      message: MESSAGE_SUCCESS,
+      data: {
+        url: link.url
+      }
+    }
   } else {
-    throw createError({
-      statusCode: 404,
-      statusMessage: 'ID should be an integer',
-    });
+    setResponseStatus(event, 404, MESSAGE_PAGE_NOT_FOUND)
+    data = {
+      success: false,
+      message: MESSAGE_PAGE_NOT_FOUND,
+    }
   }
 
-  return { url: data.url };
+  return data
 });

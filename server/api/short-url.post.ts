@@ -1,21 +1,43 @@
+import { ResponseData } from "~/types/commons";
 import { db } from "../connect";
+import { userCookie } from "../utils/auth";
+import { availableCode } from "../utils/available-code";
+import { MESSAGE_CODE_NOT_AVAILABLE, MESSAGE_CREATED, MESSAGE_MISSING_DATA } from "../utils/consts";
 
 export default defineEventHandler(async (event) => {
-  const body = await readBody(event);
-  const userCookie = getCookie(event, 'user') as string
-  const user = JSON.parse(userCookie)
+  const body = await readBody(event)
+  const runtimeConfig = useRuntimeConfig();
 
-  const { url, code } = body;
-  console.log(url, user, code)
-  let data;
-  try {
-    data = await db.link.create({
-      data: { url, userId: user.id, code },
-    });
-    setResponseStatus(event, 200);
-  } catch (error) {
-    console.log(error)
-    setResponseStatus(event, 500);
+  const user = userCookie(event)
+  const userId = user?.id
+
+  const { url, code } = body
+  const isAvailableCode = await availableCode(code)
+  let data: ResponseData
+  if (isAvailableCode) {
+    if (url && userId) {
+      const link = await db.link.create({
+        data: { url, userId, code },
+      })
+      setResponseStatus(event, 200)
+      data = {
+        success: true,
+        message: MESSAGE_CREATED,
+        data: { ...link, urlFull: `${runtimeConfig.domain}/${link.code}` }
+      }
+    } else {
+      setResponseStatus(event, 400, MESSAGE_MISSING_DATA)
+      data = {
+        success: false,
+        message: MESSAGE_MISSING_DATA
+      }
+    }
+  } else {
+    setResponseStatus(event, 400, MESSAGE_CODE_NOT_AVAILABLE)
+    data = {
+      success: false,
+      message: MESSAGE_CODE_NOT_AVAILABLE
+    }
   }
-  return data;
+  return data
 });

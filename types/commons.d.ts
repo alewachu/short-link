@@ -38,3 +38,14 @@ export type Status = 'LOADING' | 'IDLE' | 'SUCCESS' | 'ERROR';
 export type Data = {
   url: string;
 };
+
+export type ResponseData = {
+  success: boolean;
+  message: string;
+  data?: any
+}
+
+export type CreateLink = {
+  url: string;
+  code: string;
+}

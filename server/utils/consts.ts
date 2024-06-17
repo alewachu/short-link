@@ -1,0 +1,7 @@
+export const MESSAGE_CREATED = "Successfully created registry"
+export const MESSAGE_SUCCESS = "Successful process"
+export const MESSAGE_MISSING_DATA = "Missing data to create the record"
+export const MESSAGE_CODE_REQUIRED = "Code is required"
+export const MESSAGE_CODE_NOT_AVAILABLE = "The code is not available"
+export const MESSAGE_PAGE_NOT_FOUND = "Page not found"
+export const MESSAGE_URL_REQUIRED = "The url is not available"

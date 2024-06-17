@@ -6,7 +6,6 @@
 <script setup lang="ts">
 const router = useRouter()
 const { githubLogout } = useGithub();
-const user = ref()
 
 const logout = async () => {
   await githubLogout()
