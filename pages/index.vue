@@ -1,5 +1,6 @@
 <template>
   <FormLink />
+  <ListLink />
   <button @click="logout()">Sign Out</button>
 </template>
 
