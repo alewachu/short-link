@@ -1,3 +1,4 @@
+import type { Link } from "@prisma/client";
 import type { CreateLink, ResponseData } from "~/types/commons";
 
 export default function () {
@@ -19,5 +20,22 @@ export default function () {
     return data
   }
 
-  return { randomCode, checkCode, createLink }
+
+  const getLinkByUser = async () => {
+    const { data } = await useFetch<ResponseData>(`/api/link`)
+    return data
+  }
+
+  const changeActive = async (link: Link) => {
+    const { data } = await useFetch<ResponseData>(`/api/link/${link.id}`, {
+      method: 'PUT',
+      body: {
+        ...link,
+        active: link.active ? 0 : 1
+      }
+    })
+    return data
+  }
+
+  return { randomCode, checkCode, createLink, getLinkByUser, changeActive }
 }
