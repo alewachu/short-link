@@ -1,4 +1,5 @@
-import { db, Prisma } from "../connect"
+import { Prisma } from "@prisma/client"
+import { db } from "../connect"
 
 export const availableUrl = async (url: string, userId?: number) => {
   let where: Prisma.LinkWhereInput = {
