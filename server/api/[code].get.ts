@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
     where: { code },
   });
 
-  let data: ResponseData
+  let response: ResponseData
   if (link?.id) {
     await db.link.update({
       where: { id: link.id },
@@ -18,8 +18,8 @@ export default defineEventHandler(async (event) => {
       }
     })
     setResponseStatus(event, 200, MESSAGE_SUCCESS);
-    data = {
-      success: false,
+    response = {
+      success: true,
       message: MESSAGE_SUCCESS,
       data: {
         url: link.url
@@ -27,11 +27,11 @@ export default defineEventHandler(async (event) => {
     }
   } else {
     setResponseStatus(event, 404, MESSAGE_PAGE_NOT_FOUND)
-    data = {
+    response = {
       success: false,
       message: MESSAGE_PAGE_NOT_FOUND,
     }
   }
 
-  return data
+  return response
 });

@@ -7,12 +7,12 @@ export default defineEventHandler(async (event) => {
   const code = query.q as string | undefined
 
   let isAvailableCode = false
-  let data: ResponseData
+  let response: ResponseData
 
   if (code && Boolean(code)) {
     isAvailableCode = await availableCode(code)
     setResponseStatus(event, 200, MESSAGE_SUCCESS);
-    data = {
+    response = {
       success: true,
       message: MESSAGE_SUCCESS,
       data: {
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     }
   } else {
     setResponseStatus(event, 400, MESSAGE_CODE_REQUIRED)
-    data = {
+    response = {
       success: false,
       message: MESSAGE_CODE_REQUIRED,
       data: {
@@ -30,5 +30,5 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  return data
+  return response
 })

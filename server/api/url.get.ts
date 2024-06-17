@@ -7,12 +7,12 @@ export default defineEventHandler(async (event) => {
   const url = query.q as string | undefined
 
   let isAvailableUrl = false
-  let data: ResponseData
+  let response: ResponseData
 
   if (url && Boolean(url)) {
     isAvailableUrl = await availableUrl(url)
     setResponseStatus(event, 200, MESSAGE_SUCCESS);
-    data = {
+    response = {
       success: true,
       message: MESSAGE_SUCCESS,
       data: {
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
     }
   } else {
     setResponseStatus(event, 400, MESSAGE_URL_REQUIRED)
-    data = {
+    response = {
       success: false,
       message: MESSAGE_URL_REQUIRED,
       data: {
@@ -29,5 +29,5 @@ export default defineEventHandler(async (event) => {
       }
     }
   }
-  return data
+  return response
 })

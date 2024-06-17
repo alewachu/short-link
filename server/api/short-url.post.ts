@@ -13,31 +13,31 @@ export default defineEventHandler(async (event) => {
 
   const { url, code } = body
   const isAvailableCode = await availableCode(code)
-  let data: ResponseData
+  let response: ResponseData
   if (isAvailableCode) {
     if (url && userId) {
       const link = await db.link.create({
         data: { url, userId, code },
       })
       setResponseStatus(event, 200)
-      data = {
+      response = {
         success: true,
         message: MESSAGE_CREATED,
         data: { ...link, urlFull: `${runtimeConfig.domain}/${link.code}` }
       }
     } else {
       setResponseStatus(event, 400, MESSAGE_MISSING_DATA)
-      data = {
+      response = {
         success: false,
         message: MESSAGE_MISSING_DATA
       }
     }
   } else {
     setResponseStatus(event, 400, MESSAGE_CODE_NOT_AVAILABLE)
-    data = {
+    response = {
       success: false,
       message: MESSAGE_CODE_NOT_AVAILABLE
     }
   }
-  return data
+  return response
 });
