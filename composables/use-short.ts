@@ -1,5 +1,5 @@
 import type { Link } from "@prisma/client";
-import type { CreateLink, ResponseData } from "~/types/commons";
+import type { ResponseData } from "~/types/commons";
 
 export default function () {
 
@@ -12,7 +12,7 @@ export default function () {
     return data
   }
 
-  const createLink = async (body: CreateLink) => {
+  const createLink = async (body: Link) => {
     const { data } = await useFetch<ResponseData>('/api/short-url', {
       method: 'POST',
       body,

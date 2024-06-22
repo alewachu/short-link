@@ -28,7 +28,7 @@
           {{ link.code }}
         </td>
         <td>
-          <button @click="onChangeActive(link)">{{ link.active ? "Disabled" : "Enabled" }}</button>
+          <button @click="$emit('change-active', link)">{{ link.active ? "Disabled" : "Enabled" }}</button>
         </td>
       </tr>
     </tbody>
@@ -37,19 +37,6 @@
 
 <script setup lang="ts">
 import type { Link } from '@prisma/client';
-const links = ref<Link[]>([])
 
-const { getLinkByUser, changeActive } = useShort()
-
-const findLink = async () => {
-  const data = await getLinkByUser()
-  links.value = data.value?.data
-}
-
-const onChangeActive = async (link: Link) => {
-  await changeActive(link)
-  findLink()
-}
-
-findLink()
+const { links } = defineProps<{ links: Link[] }>()
 </script>
