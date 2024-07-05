@@ -2,9 +2,11 @@
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   imports: {
     dirs: ['types/*.ts'],
   },
+
   runtimeConfig: {
     domain: process.env.NUXT_DOMAIN,
     github: {
@@ -17,4 +19,6 @@ export default defineNuxtConfig({
       },
     },
   },
+
+  modules: ["@nuxtjs/tailwindcss"]
 });
