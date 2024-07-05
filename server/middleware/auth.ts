@@ -1,11 +1,11 @@
 import { userCookie } from "../utils/auth";
 
 export default defineEventHandler((event) => {
-  const serverSideRoutes = getRequestURL(event).pathname.startsWith('/api');
+  const path = getRequestURL(event).pathname
+  const serverSideRoutes = path.startsWith('/api');
   const user = userCookie(event)
   const userId = user?.id
-
-  if (serverSideRoutes && userId || !serverSideRoutes) {
+  if (serverSideRoutes && userId || !serverSideRoutes || path === '/api/github/callback') {
     return
   } else {
     throw createError({
