@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
         url: true,
         code: true,
         active: true,
+        visits: true,
         userId: true,
         createdAt: true
       },
