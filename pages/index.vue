@@ -9,7 +9,9 @@
       </button>
     </div>
     <div class="flex justify-center">
-      <ListLink @change-active="onChangeActive" :links="links" /> 
+      <ClientOnly>
+        <ListLink @change-active="onChangeActive" :links="links" />
+      </ClientOnly>
     </div>
   </div>
   <ClientOnly>
@@ -37,7 +39,7 @@ const onChangeActive = async (link: Link) => {
 
 const findLink = async () => {
   const data = await getLinkByUser()
-  links.value = data.value?.data
+  links.value = data ?? []
 }
 
 const handleSubmit = async (dataLink: Link) => {
@@ -45,7 +47,8 @@ const handleSubmit = async (dataLink: Link) => {
   const data = await createLink(dataLink)
   findLink()
   isLoading.value = false;
-  link.value = data.value?.data?.urlFull
+  openModal.value = false;
+  link.value = data.urlFull
 }
 
 
@@ -54,7 +57,10 @@ const logout = async () => {
   router.push('/login')
 }
 
-findLink()
+onMounted(() => {
+  findLink()
+})
+
 
 definePageMeta({
   middleware: ['auth'],

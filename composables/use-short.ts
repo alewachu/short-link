@@ -8,12 +8,12 @@ export default function () {
   }
 
   const checkCode = async (code: string) => {
-    const { data } = await useFetch<ResponseData>(`/api/code?q=${code}`)
+    const { data } = await $fetch<ResponseData>(`/api/code?q=${code}`)
     return data
   }
 
   const createLink = async (body: Link) => {
-    const { data } = await useFetch<ResponseData>('/api/short-url', {
+    const { data } = await $fetch<ResponseData>('/api/short-url', {
       method: 'POST',
       body,
     });
@@ -22,12 +22,12 @@ export default function () {
 
 
   const getLinkByUser = async () => {
-    const { data } = await useFetch<ResponseData>(`/api/link`)
+    const { data } = await $fetch<ResponseData>(`/api/link`)
     return data
   }
 
   const changeActive = async (link: Link) => {
-    const { data } = await useFetch<ResponseData>(`/api/link/${link.id}`, {
+    const { data } = await $fetch<ResponseData>(`/api/link/${link.id}`, {
       method: 'PUT',
       body: {
         ...link,
