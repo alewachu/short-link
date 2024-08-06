@@ -1,6 +1,26 @@
-DATABASE_URL=
+NUXT_DATABASE_URL=
+
+NUXT_DOMAIN=http://localhost:3000
+NUXT_HOST=0.0.0.0
+NUXT_PORT=3000
 
 NUXT_NEXTAUTH_SECRET= # You can generate one with `openssl rand -base64 32`
 NUXT_GITHUB_CLIENT_ID=
 NUXT_GITHUB_CLIENT_SECRET= # The URL of your deployed app (used for origin Check in production)
 NUXT_NEXTAUTH_URL= # whether to hit the /auth/session endpoint on every client request
+
+## DOCKER
+NUXT_DOCKER_IMAGE=
+
+## MYSQL Docker
+MYSQL_ROOT_PASSWORD=
+MYSQL_DATABASE=
+MYSQL_USER=
+MYSQL_PASSWORD=
+MYSQL_PORT=
+MYSQL_VOLUMEN=
+
+## NETWORK
+NETWORK_NAME=
+NETWORK_SUBNET=
+NETWORK_GATEWAY=

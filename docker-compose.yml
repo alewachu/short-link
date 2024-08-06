@@ -5,10 +5,10 @@ services:
     build: .
     container_name: shortlink
     restart: always
-    image: short-link
+    image: ${NUXT_DOCKER_IMAGE}
     ports:
       - ${NUXT_PORT}:3000
-    command: "npm run start"
+    command: "npm run start:prod"
     networks:
       - shortlink-networks
   shortlink-mysql:
@@ -16,7 +16,7 @@ services:
     container_name: shortlink-mysql
     command: [ "mysqld", "--mysql-native-password=ON" ]
     volumes:
-      - /var/lib/mysql-shortlink:/var/lib/mysql
+      - ${MYSQL_VOLUMEN}:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
