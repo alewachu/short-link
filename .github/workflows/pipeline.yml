@@ -1,0 +1,21 @@
+name: ci
+
+on:
+  push:
+    branches:
+      - 'production'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: multiple command
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /var/projects/short-link
+            git pull origin
