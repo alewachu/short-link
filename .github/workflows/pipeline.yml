@@ -20,3 +20,5 @@ jobs:
           script: |
             cd /var/projects/short-link
             sudo git pull origin ${{ secrets.BRANCH_NAME }}
+            sudo sudo docker build -t ${{ secrets.DOCKER_NAME }} .
+            sudo docker compose up --build -d

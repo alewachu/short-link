@@ -8,7 +8,7 @@ services:
     image: ${NUXT_DOCKER_IMAGE}
     ports:
       - ${NUXT_PORT}:3000
-    command: "npm run start:prod"
+    command: "dotenv -e .env -- npm run start:prod"
     networks:
       - shortlink-networks
   shortlink-mysql:
